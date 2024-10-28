@@ -15,10 +15,10 @@ The LabVIEW 2021 Run-Time engine download executable included within the LabVIEW
 
         │
         ├── Builds/                        		# Compiled LabVIEW executable (*requires Run-Time Engine installed on machine running the executable)
-        ├── Code/                           		# Source files
-            └── Controls/    				# Custom controls for application
+        ├── Code/                           	# Source files
+            └── Controls/    			# Custom controls for application
             └── Sub VIs/				# Sub-VIs for application
-            └── Main.vi					# Main application VI
+            └── Main.vi				# Main application VI
             └── Tic-Tac-Toe Game.aliases
             └── Tic-Tac-Toe Game.lvlps 
             └── Tic-Tac-Toe Game.lvproj   		# LabVIEW project file
