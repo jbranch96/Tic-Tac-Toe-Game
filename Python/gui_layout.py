@@ -13,7 +13,8 @@ class PyTacToeLayout():
         self.root : tk.Tk = root
         self.width : int = width
         self.height : int = height
-        self.icon = PhotoImage(file="Py-Tac-Toe_icon.png")
+        try: self.icon = PhotoImage(file="Py-Tac-Toe_icon.png")
+        except tk.TclError: pass # If image isn't found for the app icon, then just continue on. Where icon is used need to handle except case.
         self.main_frame = ttk.Frame(self.root, padding="10")
         self.info_frame = ttk.Frame(self.main_frame)
         self.grid_frame = ttk.Frame(self.main_frame)
@@ -31,7 +32,7 @@ class PyTacToeLayout():
 
     def setup_main_window(self) -> None:
         "This function sets up the main TK window for the application."
-        self.root.iconphoto(True, self.icon)
+        if hasattr(self, "icon"): self.root.iconphoto(True, self.icon) # Important to check for attr existence, since if image not found icon attr not created
         self.root.title("Py-Tac-Toe")
         self.root.geometry(f"{self.width}x{self.height}")
         self.root["bg"] = "light gray"
