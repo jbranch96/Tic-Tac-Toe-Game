@@ -31,9 +31,10 @@ class PyTacToeGUI(tk.Frame):
         self.layout = PyTacToeLayout(root=self.root, width=self.width, height=self.height)
         self.state_updater = PyTacToePlayerStateUpdater(game=self.game, layout=self.layout, root=self.root)
         self.game_controller = PyTacToeGameController(game = self.game, layout=self.layout, state_updater=self.state_updater, root=self.root)
-        self.mode_var = tk.StringVar(value='2-Player')  # Default mode : 2-Player
-        self.player1_var = tk.StringVar(value='Player 1')  # Default name for player 1
-        self.player2_var = tk.StringVar(value='Player 2')  # Default name for player 2
+        self.difficulty_var = tk.IntVar(value=1)            # Default mode : Medium
+        self.mode_var = tk.StringVar(value='2-Player')      # Default mode : 2-Player
+        self.player1_var = tk.StringVar(value='Player 1')   # Default name for player 1
+        self.player2_var = tk.StringVar(value='Player 2')   # Default name for player 2
     
         self.layout.setup_main_window()
         self.layout.setup_frames(modal_func=self.open_game_mode_modal, button_func=self.handle_button_click, empty_mark=self.game.empty_mark)
@@ -61,7 +62,7 @@ class PyTacToeGUI(tk.Frame):
         ttk.Radiobutton(modal_window, text="Vs Computer", variable=self.mode_var, value="vs-computer").pack(anchor='w')
 
         # Button to confirm selection
-        confirm_button = ttk.Button(modal_window, text="Confirm", command=lambda: self.confirm_game_mode_selection(modal_window))
+        confirm_button = ttk.Button(master=modal_window, text="Confirm", command=lambda: self.confirm_game_mode_selection(modal_window))
         confirm_button.pack(pady=10)
 
         modal_window.grab_set()  # Make this window modal
@@ -77,6 +78,8 @@ class PyTacToeGUI(tk.Frame):
         if selected_mode == "vs-computer":
             self.player1_var.set(value="User")
             self.player2_var.set(value="Computer")
+            self.open_difficulty_selection_modal()
+            self.game.send_difficulty_selected_to_game_class(difficulty=self.difficulty_var.get())
 
         if selected_mode == "2-Player":
             self.player1_var.set(value="Player-1") # Set the player1_var to 'Player-1' as a default
@@ -100,11 +103,34 @@ class PyTacToeGUI(tk.Frame):
         ttk.Entry(modal_window, text='Player2 Name', textvariable=self.player2_var).pack(anchor='w')
 
         # Button to confirm selection
-        confirm_button = ttk.Button(modal_window, text="Confirm", command=modal_window.destroy)
+        confirm_button = ttk.Button(master=modal_window, text="Confirm", command=modal_window.destroy)
         confirm_button.pack(pady=10)
 
         modal_window.grab_set()  # Make this window modal
         self.root.wait_window(modal_window)  # Wait for the modal to close    
+
+
+    def open_difficulty_selection_modal(self):
+        """This function creates a modal window that is used to capture difficulty selection is the user is playing against the computer."""
+        modal_window = tk.Toplevel(self.root)
+        modal_window.title("Choose Difficulty")
+        modal_window.geometry("300x150")
+        self.layout.center_window(window=modal_window, width=300, height=150)
+
+        ttk.Label(modal_window, text="Choose Difficulty:").pack(pady=10)
+
+        # Radio buttons for game mode selection
+        ttk.Radiobutton(modal_window, text="Easy", variable=self.difficulty_var , value=0).pack(anchor='w')
+        ttk.Radiobutton(modal_window, text="Medium", variable=self.difficulty_var , value=1).pack(anchor='w')
+        ttk.Radiobutton(modal_window, text="Hard", variable=self.difficulty_var , value=2).pack(anchor='w')
+
+        # Button to confirm selection
+        confirm_button = ttk.Button(master=modal_window, text="Confirm", command=modal_window.destroy)
+        
+        confirm_button.pack(pady=10)
+
+        modal_window.grab_set()  # Make this window modal
+        self.root.wait_window(modal_window)  # Wait for the modal to close
 
 
     def handle_button_click(self, position : int) -> None:
