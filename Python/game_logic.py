@@ -68,7 +68,6 @@ class PyTacToeGame:
         """
         
         # 1 - Check for winning move for computer, if there is take it
-        
         temp_result : int = self.scan_board_for_winning_move(board_mark=self.current_player, empty_positions=empty_positions) 
         if temp_result != -1: return temp_result # func returns -1 if there isn't a winning move
 
