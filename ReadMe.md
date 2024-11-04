@@ -29,3 +29,6 @@ Impossible: The computer utilizes the minimax algorithm, effectively making it "
         ├── gui_controller.py              		# Handles top-level game logic that requires interaction with the GUI
         ├── game_logic.py                  		# Handles lower-level internal game logic and game state management
         └── Py-Tac-Toe_icon.png            		# Icon used in as the application logo
+
+## Tech Used
+- Python 3.11.5 and Tkinter
