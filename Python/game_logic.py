@@ -133,7 +133,6 @@ class PyTacToeGame:
 
     def minimax_evaluate_board(self, minimax_board : list[str]) -> int | None:
         """Evaluates the minimax board for a win or tie."""
-        #print(f"minimax_board: {minimax_board}")
         for combo in self.winning_combinations:
             if minimax_board[combo[0]] == minimax_board[combo[1]] == minimax_board[combo[2]] != self.empty_mark:
                 return 1 if minimax_board[combo[0]] == 'X' else -1  # X wins: 1, O wins: -1
@@ -148,12 +147,11 @@ class PyTacToeGame:
     def return_move_minimax_logic(self, board : list[str], is_maximizing : bool = False) -> int:
         """
         Minimax implementation for Tic-Tac-Toe game, should always make it such that implementer wins or the game is a draw.
-        This function does not check for terminal state, so that should be done externally prior to calling this function.
+        No alpha-beta pruning or max recursion depth (full game tree evaluated on each call)
         max(+1) = 'X' user
         min(-1) = 'O' user
-        no alpha-beta pruning or max depth (full game tree evaluated on each call)
-
-        Return params:
+        
+        Return param(s):
             int: Used to store the minimax result 
         """
         score : int = self.minimax_evaluate_board(minimax_board=board) # check for terminal state
@@ -190,7 +188,6 @@ class PyTacToeGame:
                     for i in range(3):
                         if self.board[combo[i]] == self.empty_mark: 
                             return combo[i]
-
         return -1
     
 
