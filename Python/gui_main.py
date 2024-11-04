@@ -31,7 +31,7 @@ class PyTacToeGUI(tk.Frame):
         self.layout = PyTacToeLayout(root=self.root, width=self.width, height=self.height)
         self.state_updater = PyTacToePlayerStateUpdater(game=self.game, layout=self.layout, root=self.root)
         self.game_controller = PyTacToeGameController(game = self.game, layout=self.layout, state_updater=self.state_updater, root=self.root)
-        self.difficulty_var = tk.IntVar(value=1)            # Default mode : Medium
+        self.difficulty_var = tk.IntVar(value=1)            # Default difficulty : Medium (Options: Easy, Medium, Difficult, Impossible)
         self.mode_var = tk.StringVar(value='2-Player')      # Default mode : 2-Player
         self.player1_var = tk.StringVar(value='Player 1')   # Default name for player 1
         self.player2_var = tk.StringVar(value='Player 2')   # Default name for player 2
@@ -114,8 +114,8 @@ class PyTacToeGUI(tk.Frame):
         """This function creates a modal window that is used to capture difficulty selection is the user is playing against the computer."""
         modal_window = tk.Toplevel(self.root)
         modal_window.title("Choose Difficulty")
-        modal_window.geometry("300x150")
-        self.layout.center_window(window=modal_window, width=300, height=150)
+        modal_window.geometry("300x175")
+        self.layout.center_window(window=modal_window, width=300, height=175)
 
         ttk.Label(modal_window, text="Choose Difficulty:").pack(pady=10)
 
@@ -123,6 +123,7 @@ class PyTacToeGUI(tk.Frame):
         ttk.Radiobutton(modal_window, text="Easy", variable=self.difficulty_var , value=0).pack(anchor='w')
         ttk.Radiobutton(modal_window, text="Medium", variable=self.difficulty_var , value=1).pack(anchor='w')
         ttk.Radiobutton(modal_window, text="Hard", variable=self.difficulty_var , value=2).pack(anchor='w')
+        ttk.Radiobutton(modal_window, text="Impossible", variable=self.difficulty_var , value=3).pack(anchor='w')
 
         # Button to confirm selection
         confirm_button = ttk.Button(master=modal_window, text="Confirm", command=modal_window.destroy)

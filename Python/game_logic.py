@@ -10,6 +10,7 @@ class PyTacToeGameComputerLogic(Enum):
     RANDOM = 0
     HEURISTIC = 1
     HEURISTIC_DIFFICULT = 2
+    MINIMAX_WIN_IMPOSSIBLE = 3
 
 
 class PyTacToeGame:
@@ -17,7 +18,7 @@ class PyTacToeGame:
     def __init__(self):
         self.empty_mark : str = ' ' # Obvious constraint for this is that it cannot be 'X' or 'O', but could be any other str really, ' ' is simple and makes sense
         self.board : list[str] = [self.empty_mark for _ in range(9)] # Game board modeled as 1-D list of str ('X', 'O', or self.empty_mark are the only valid entries) 
-        self.computer_logic_enum_enum = PyTacToeGameComputerLogic.HEURISTIC
+        self.computer_logic_enum = PyTacToeGameComputerLogic.HEURISTIC
         self.current_player : str = 'X'
         self.winning_combinations : list[tuple[int]] = [
             (0, 1, 2), (3, 4, 5), (6, 7, 8), # horizontals
@@ -52,6 +53,8 @@ class PyTacToeGame:
                 move = random.choice(empty_positions) 
             elif self.computer_logic_enum in {PyTacToeGameComputerLogic.HEURISTIC, PyTacToeGameComputerLogic.HEURISTIC_DIFFICULT}:
                 move = self.computer_move_heuristic_logic(empty_positions=empty_positions)
+            elif self.computer_logic_enum == PyTacToeGameComputerLogic.MINIMAX_WIN_IMPOSSIBLE:
+                move = self.computer_move_minimax_best()
             else:
                 raise ValueError("Invalid selection for computer logic enumeration.")
 
@@ -98,6 +101,26 @@ class PyTacToeGame:
         if 5 in empty_positions: return 5
         if 7 in empty_positions: return 7
 
+    
+    def computer_move_minimax_best(self):
+        """Finds the best move for the computer (O)."""
+        best_score = float("inf")
+        best_position : int = -1
+
+        empty_positions : list[int] = [i for i in range(9) if self.board[i] == self.empty_mark]
+        copy_board : list[str] = self.board.copy()  # Make shallow copy, separate obj refs in this case as desired
+
+        for pos in empty_positions:
+            copy_board[pos] = self.current_player   # Try 'O' move
+            score = self.return_move_minimax_logic(board=copy_board, is_maximizing=True)
+            copy_board[pos] = self.empty_mark       # Undo move
+            
+            if score < best_score:
+                best_score = score
+                best_position = pos
+
+        return best_position
+
 
     def make_move(self, position : int) -> bool:
         """This function checks if the requested user move is valid, if the move requested is invalid it does not perform any move and returns False.
@@ -108,9 +131,53 @@ class PyTacToeGame:
         return True
     
 
+    def minimax_evaluate_board(self, minimax_board : list[str]) -> int | None:
+        """Evaluates the minimax board for a win or tie."""
+        #print(f"minimax_board: {minimax_board}")
+        for combo in self.winning_combinations:
+            if minimax_board[combo[0]] == minimax_board[combo[1]] == minimax_board[combo[2]] != self.empty_mark:
+                return 1 if minimax_board[combo[0]] == 'X' else -1  # X wins: 1, O wins: -1
+        return 0 if self.empty_mark not in minimax_board else None  # Tie: 0, game continues: None
+    
+
     def reset_game(self) -> None:
         """This function resets the board state within the class back to default (all cells marked with self.empty_mark)."""
         self.board = [self.empty_mark for _ in range(9)]
+
+    
+    def return_move_minimax_logic(self, board : list[str], is_maximizing : bool = False) -> int:
+        """
+        Minimax implementation for Tic-Tac-Toe game, should always make it such that implementer wins or the game is a draw.
+        This function does not check for terminal state, so that should be done externally prior to calling this function.
+        max(+1) = 'X' user
+        min(-1) = 'O' user
+        no alpha-beta pruning or max depth (full game tree evaluated on each call)
+
+        Return params:
+            int: Used to store the minimax result 
+        """
+        score : int = self.minimax_evaluate_board(minimax_board=board) # check for terminal state
+        if score is not None: return score # return the evaluated result if score is terminal
+        
+        empty_positions : list[int] = [i for i in range(9) if board[i] == self.empty_mark] 
+
+        if is_maximizing: # 'X'
+            best_score = float("-inf")
+            for pos in empty_positions:
+                board[pos] = 'X'
+                minimax_score = self.return_move_minimax_logic(board=board, is_maximizing=False)
+                board[pos] = self.empty_mark
+                best_score = max(best_score, minimax_score)
+            return best_score
+        
+        else: # 'O'
+            best_score = float("inf")
+            for pos in empty_positions:
+                board[pos] = 'O'
+                minimax_score = self.return_move_minimax_logic(board=board, is_maximizing=True)
+                board[pos] = self.empty_mark
+                best_score = min(best_score, minimax_score)
+            return best_score
 
     
     def scan_board_for_winning_move(self, board_mark : str, empty_positions : list[int]) -> int:
@@ -129,7 +196,7 @@ class PyTacToeGame:
 
     def send_difficulty_selected_to_game_class(self, difficulty : int) -> None:
         """This function is used to retrieve the selected game difficulty.
-        Valid difficulty selections are: 'EASY:0' 'MEDIUM:1' or 'HARD:2'
+        Valid difficulty selections are: 'EASY:0' 'MEDIUM:1' 'HARD:2' or 'IMPOSSIBLE:3'
         """
         self.computer_logic_enum = PyTacToeGameComputerLogic(difficulty)
 
