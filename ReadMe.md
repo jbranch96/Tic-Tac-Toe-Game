@@ -1,6 +1,6 @@
 # Tic-Tac-Toe GUI App
 
-This folder contains source code for a Python based GUI implmentation of the game Tic-Tac-Toe
+This folder contains source code for a Python based GUI implementation of the game Tic-Tac-Toe
 
 ## Game Modes
 # 2-Player Mode
