@@ -17,13 +17,13 @@ In this mode, two players take turns making their moves on the game board. Playe
 ## Vs Computer Mode
 In the Vs Computer mode, one user competes against the computer. The computer's difficulty can be adjusted to enhance gameplay. The available difficulty settings are:
 
-Easy: The computer makes random moves, providing a very casual experience.
+***Easy***: The computer makes random moves, providing a very casual experience.
 
-Medium: The computer attempts to block the player’s winning moves but may overlook some opportunities to win for itself. This level offers a moderate challenge.
+***Medium***: The computer attempts to block the player’s winning moves but may overlook some opportunities to win for itself. This level offers a moderate challenge.
 
-Hard: The computer employs heuristic logic to make strategic decisions. It actively blocks the player's winning moves while seeking to create its own winning opportunities, making it more competitive.
+***Hard***: The computer employs heuristic logic to make strategic decisions. It actively blocks the player's winning moves while seeking to create its own winning opportunities, making it more competitive.
 
-Impossible: The computer utilizes the minimax algorithm, effectively making it "impossible" for the user to win.
+***Impossible***: The computer utilizes the minimax algorithm, effectively making it "impossible" for the user to win.
 				
 # Python GUI:
 ![Py-Tac-Toe-Tk-GUI](Py-Tac-Toe-Tk-GUI.PNG)
