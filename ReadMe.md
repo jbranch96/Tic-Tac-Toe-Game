@@ -31,17 +31,19 @@ Impossible: The computer utilizes the minimax algorithm, effectively making it "
 ## Steps to Run the Code
         
 - 1. Clone the Repository: "git clone https://github.com/jbranch96/Tic-Tac-Toe-Game.git"
-- 2. Run: **Python main.py**
+- 2. Run:
+     - Navigate to the Python folder and run main.py: **Python main.py**
 
 # Project Code Structure
 
         │
-        ├── main.py                     # Main entry point for the Py-Tac-Toe application
-        ├── gui_main.py                 # Main GUI class that invokes the other classes defined in the other project files
-        ├── gui_layout.py               # Handles configuring the GUI layout 
-        ├── gui_controller.py           # Handles top-level game logic that requires interaction with the GUI
-        ├── game_logic.py               # Handles lower-level internal game logic and game state management
-        └── Py-Tac-Toe_icon.png         # Icon used in as the application logo
+        ├── Python/  
+            ├── main.py                     # Main entry point for the Py-Tac-Toe application
+            ├── gui_main.py                 # Main GUI class that invokes the other classes defined in the other project files
+            ├── gui_layout.py               # Handles configuring the GUI layout 
+            ├── gui_controller.py           # Handles top-level game logic that requires interaction with the GUI
+            ├── game_logic.py               # Handles lower-level internal game logic and game state management
+            └── Py-Tac-Toe_icon.png         # Icon used in as the application logo
 
 ## Tech Used
 - Python 3.11.5 and Tkinter
