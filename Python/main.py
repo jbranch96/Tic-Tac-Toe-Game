@@ -11,7 +11,7 @@ from gui_main import PyTacToeGUI
 
 def main() -> None:
     root = tk.Tk() # create self.root window
-    PyTacToeGUI(root, width=660, height=340)
+    PyTacToeGUI(root, width=660, height=345)
     root.mainloop() # execute tkinter 
 
 

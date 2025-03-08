@@ -71,7 +71,7 @@ class PyTacToePlayerStateUpdater:
     
     def update_game_win_record(self, record : str) -> None:
         """This functions updates the game win record textfield on the GUI after each game."""
-        self.layout.textfield_game_record.insert(index=tk.END, chars=record+"\n")
+        self.layout.textfield_game_record.insert(index=tk.END, chars=f"#{self.game.match_count}) {record}\n")
         self.layout.textfield_game_record.see(tk.END)
 
 

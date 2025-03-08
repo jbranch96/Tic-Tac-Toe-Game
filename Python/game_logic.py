@@ -16,6 +16,7 @@ class PyTacToeGameComputerLogic(Enum):
 class PyTacToeGame:
 
     def __init__(self):
+        self.match_count : int = 0 # Counter to counter the # of match
         self.empty_mark : str = ' ' # Obvious constraint for this is that it cannot be 'X' or 'O', but could be any other str really, ' ' is simple and makes sense
         self.board : list[str] = [self.empty_mark for _ in range(9)] # Game board modeled as 1-D list of str ('X', 'O', or self.empty_mark are the only valid entries) 
         self.computer_logic_enum = PyTacToeGameComputerLogic.HEURISTIC
@@ -31,14 +32,18 @@ class PyTacToeGame:
         """This functions contains the inner game state logic to check if there is a winner based on the current game state."""
         for combo in self.winning_combinations:
             if self.board[combo[0]] == self.board[combo[1]] == self.board[combo[2]] != self.empty_mark:
+                self.match_count = self.match_count + 1
                 return self.board[combo[0]]
         return None
     
 
     def check_tie(self) -> None | str:
         """This functions contains the inner game state logic to check if the game is in a tie(draw) based on the current game state."""
-        if self.empty_mark in self.board: return None
-        else: return self.empty_mark
+        if self.empty_mark in self.board: 
+            return None
+        else: 
+            self.match_count = self.match_count + 1
+            return self.empty_mark
         
     
     def computer_move(self) -> None:
